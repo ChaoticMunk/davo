@@ -1,0 +1,143 @@
+#include <stdio.h>
+
+struct ipaddr
+  {
+    int octet1;
+    int octet2;
+    int octet3;
+    int octet4;
+  };
+
+  typedef struct ipaddr ipaddr_t;
+
+  void print_ipaddr(ipaddr_t ip)
+  {
+    printf("%d.%d.%d.%d", ip.octet1, ip.octet2, ip.octet3, ip.octet4);
+  }
+
+  int is_valid(ipaddr_t ip)
+    {
+      int result;
+      result = 0;
+
+      if ((ip.octet1 > 0 && ip.octet1 < 256) && (ip.octet2 > 0 && ip.octet2 < 256) && (ip.octet3 > 0 && ip.octet3 < 256) && (ip.octet4 > 0 && ip.octet4 < 256))
+      {
+        result = 1;
+      }
+      return result;
+    }
+
+  int is_equal(ipaddr_t ip1, ipaddr_t ip2)
+    {
+      int result;
+      result = 0;
+      if ((ip1.octet1 = ip2.octet1) && (ip1.octet2 = ip2.octet2) && (ip1.octet3 = ip2.octet3) && (ip1.octet4 = ip2.octet4))
+        {
+          result = 1;
+        }
+
+      return result;
+    }
+
+  int is_same_subnet(ipaddr_t ip1, ipaddr_t ip2)
+    {
+      int result;
+      result = 0;
+      if ((ip1.octet1 = ip2.octet1) && (ip1.octet2 = ip2.octet2) && (ip1.octet3 = ip2.octet3))
+        {
+          result = 1;
+        }
+      return result;
+    }
+
+  int get_valid_ipaddrs(ipaddr_t addr_array[], int addr_array_len)
+    {
+      int i, numValid = 0, exit1 = 0;
+      int isValid = 0;
+      ipaddr_t ip;
+      ipaddr_t valid[addr_array_len];
+
+      for (i = 0; i < addr_array_len; i++)
+        {
+          printf("Input %d\n", i);
+          ip = addr_array[i];
+          isValid = is_valid(ip);
+          if (isValid == 1)
+            {
+              printf("Vaild: %d.%d.%d.%d\n", addr_array[i].octet1, addr_array[i].octet2, addr_array[i].octet3, addr_array[i].octet4);
+              valid[numValid].octet1 = addr_array[i].octet1;
+              valid[numValid].octet2 = addr_array[i].octet2;
+              valid[numValid].octet3 = addr_array[i].octet3;
+              valid[numValid].octet4 = addr_array[i].octet4;
+              numValid++;
+            }  
+          else if (addr_array[i].octet1 == -1 && addr_array[i].octet2 == -1 && addr_array[i].octet3 == -1 && addr_array[i].octet4 == -1)
+            {
+              exit1 = 1;
+            }
+          else
+            {
+              addr_array_len++;
+              printf("%d Invaild input\n", i);
+              printf("%d.%d.%d.%d\n", addr_array[i].octet1, addr_array[i].octet2, addr_array[i].octet3, addr_array[i].octet4);
+            }
+          if (exit1 == 1)
+            {
+              addr_array = valid;
+              return numValid;
+            }
+          }
+
+        addr_array = valid;
+        return numValid;
+      }
+
+    void print_same_subnet(const ipaddr_t addr_array[], int addr_array_len)
+      {
+        int array[addr_array_len];
+        int j = 0;
+
+        for (int i = 0; i < addr_array_len; i++)
+          {
+            array[i] == 1;
+          }
+
+        for (int i = 0; i < addr_array_len && j < addr_array_len; i++)
+          {
+            ipaddr_t ip1 = addr_array[i];
+            if (array[i] = 1)
+              {
+                print_ipaddr(ip1);
+                array[i] = 0;
+          }
+        for (int j = i + 1; j < addr_array_len; j++)
+          {
+            if (array[j] == 1)
+              {
+                ipaddr_t ip2 = addr_array[j];
+                if ((is_same_subnet(ip1, ip2)))
+                  {
+                    printf(",");
+                    print_ipaddr(ip2);
+                    array[j] =0;
+                  }
+              }
+          }
+
+        printf("\n");
+        }
+      }
+
+    int main()
+      {
+        ipaddr_t addr_array[10];
+  
+        int len = 0;
+        printf("How many ip addresses do you want to insert: \n");
+        scanf("%d", &len);
+        int count = get_valid_ipaddrs(addr_array, len);
+        printf("Valid ip address count is: %d \n", count);
+        printf("Same subnet ip addresses are \n");
+        print_same_subnet(addr_array, count);
+        return 0;
+}
